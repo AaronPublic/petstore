@@ -3,11 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import { Container, Typography, Box, Button, Grid, Chip, Divider, CircularProgress } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import petService from '../services/petService';
+import { useCart } from '../context/CartContext';
 
 const PetDetails = () => {
   const { id } = useParams();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchPet = async () => {
@@ -22,6 +24,11 @@ const PetDetails = () => {
     };
     fetchPet();
   }, [id]);
+
+  const handleAddToCart = () => {
+    addToCart(pet);
+    alert(`${pet.name} added to cart!`);
+  };
 
   if (loading) {
     return (
@@ -102,10 +109,11 @@ const PetDetails = () => {
             <Button 
               variant="contained" 
               size="large" 
+              onClick={handleAddToCart}
               className="bg-green-600 hover:bg-green-700 py-4 text-xl font-bold rounded-lg shadow-lg"
               fullWidth
             >
-              Adopt {pet.name}
+              Add to Cart
             </Button>
           </Box>
         </Grid>

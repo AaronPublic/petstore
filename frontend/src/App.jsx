@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import PetGallery from './pages/PetGallery';
 import PetDetails from './pages/PetDetails';
+import { CartProvider } from './context/CartContext';
 
 const theme = createTheme({
   palette: {
@@ -35,14 +36,16 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Routes>
-            <Route path="/" element={<PetGallery />} />
-            <Route path="/pets/:id" element={<PetDetails />} />
-          </Routes>
-        </div>
-      </Router>
+      <CartProvider>
+        <Router>
+          <div className="min-h-screen bg-gray-50">
+            <Routes>
+              <Route path="/" element={<PetGallery />} />
+              <Route path="/pets/:id" element={<PetDetails />} />
+            </Routes>
+          </div>
+        </Router>
+      </CartProvider>
     </ThemeProvider>
   );
 }
