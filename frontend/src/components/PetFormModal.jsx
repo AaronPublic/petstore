@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem } from '@mui/material';
 
 const PetFormModal = ({ open, onClose, onSave, initialData }) => {
   const [formData, setFormData] = useState({ name: '', category: 'DOG', breed: '', age: '', price: '', imageUrl: '', description: '' });
 
   useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
-    } else {
-      setFormData({ name: '', category: 'DOG', breed: '', age: '', price: '', imageUrl: '', description: '' });
+    if (open) {
+      if (initialData) {
+        setFormData(initialData);
+      } else {
+        setFormData({ name: '', category: 'DOG', breed: '', age: '', price: '', imageUrl: '', description: '' });
+      }
     }
-  }, [initialData, open]);
+  }, [open, initialData]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 

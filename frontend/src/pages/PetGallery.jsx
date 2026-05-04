@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Grid, Typography, Box, CircularProgress, TextField, InputAdornment, Button } from '@mui/material';
+import { useState, useEffect, useCallback } from 'react';
+import { Grid, Typography, Box, CircularProgress, TextField, InputAdornment, Button, Stack, Container, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import petService from '../services/petService';
@@ -17,11 +17,7 @@ const PetGallery = () => {
   const [editingPet, setEditingPet] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
 
-  useEffect(() => {
-    fetchPets();
-  }, [category]);
-
-  const fetchPets = async () => {
+  const fetchPets = useCallback(async () => {
     setLoading(true);
     try {
       const data = await petService.getAllPets(category);
@@ -31,7 +27,12 @@ const PetGallery = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [category]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchPets();
+  }, [fetchPets]);
 
   const handleSave = async (petData) => {
     if (editingPet) await petService.updatePet(editingPet.id, petData);
@@ -53,53 +54,55 @@ const PetGallery = () => {
   );
 
   return (
-    <Box className="bg-gray-50 min-h-screen">
-      <Container maxWidth="xl" className="py-12">
-        <Box className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-          <Box>
-            <Typography variant="h2" component="h1" className="font-extrabold text-gray-900 tracking-tight">
-              Our Little Friends
-            </Typography>
-            <Button variant="contained" color="secondary" startIcon={<AddIcon />} onClick={() => setModalOpen(true)} className="mt-4 rounded-xl py-2 px-6">
-              Add New Pet
-            </Button>
+    <Box sx={{ pb: 10 }}>
+      <Paper elevation={0} sx={{ py: 8, mb: 6, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', borderRadius: 0 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h2" sx={{ fontWeight: 900, mb: 1, letterSpacing: -1 }}>Find your new best friend.</Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>Discover our curated selection of pets waiting for their forever homes.</Typography>
+          <Button variant="contained" size="large" color="primary" startIcon={<AddIcon />} onClick={() => setModalOpen(true)} sx={{ px: 4, py: 1.5, borderRadius: 2 }}>
+            Add New Pet
+          </Button>
+        </Container>
+      </Paper>
+
+      <Container maxWidth="lg">
+        <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} spacing={3} sx={{ mb: 4 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <FilterBar activeCategory={category} onCategoryChange={setCategory} />
           </Box>
           <TextField
             variant="outlined"
-            placeholder="Search by name or breed..."
+            placeholder="Search pets..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-80 bg-white"
+            sx={{ width: { xs: '100%', md: 300 }, bgcolor: 'background.paper' }}
             InputProps={{
               startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
             }}
           />
-        </Box>
-
-        <FilterBar activeCategory={category} onCategoryChange={setCategory} />
+        </Stack>
 
         {loading ? (
-          <Box className="flex justify-center my-32">
-            <CircularProgress size={60} thickness={4} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 12 }}>
+            <CircularProgress size={50} />
           </Box>
         ) : (
-          <Grid container spacing={4}>
+          <Grid container spacing={4} direction="row" alignItems="flex-start" justifyContent="flex-start">
             {filteredPets.length > 0 ? (
               filteredPets.map((pet) => (
-                <Grid item key={pet.id} xs={12} sm={6} lg={4}>
+                <Grid item key={pet.id} xs={12} sm={6} md={4}>
                   <PetCard pet={pet} onEdit={(p) => { setEditingPet(p); setModalOpen(true); }} onDelete={(id) => setDeleteId(id)} />
                 </Grid>
               ))
             ) : (
-              <Box className="w-full text-center my-20">
-                <Typography variant="h5" className="text-gray-400 font-medium">
-                  No pets found.
-                </Typography>
-              </Box>
+              <Typography variant="h6" sx={{ width: '100%', textAlign: 'center', py: 10, color: 'text.secondary' }}>
+                No pets found matching your criteria.
+              </Typography>
             )}
           </Grid>
         )}
       </Container>
+
       <PetFormModal open={modalOpen} onClose={() => { setModalOpen(false); setEditingPet(null); }} onSave={handleSave} initialData={editingPet} />
       <DeleteConfirmationModal 
         open={!!deleteId} 

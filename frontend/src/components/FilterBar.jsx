@@ -1,6 +1,4 @@
-import React from 'react';
-import { Box, Chip, Stack, Typography } from '@mui/material';
-import PetsIcon from '@mui/icons-material/Pets';
+import { Box, Tabs, Tab } from '@mui/material';
 
 const categories = [
   { label: 'All', value: null },
@@ -11,23 +9,20 @@ const categories = [
 ];
 
 const FilterBar = ({ activeCategory, onCategoryChange }) => {
+  const currentIndex = categories.findIndex((c) => c.value === activeCategory);
+
   return (
-    <Box className="my-8">
-      <Typography variant="h6" className="mb-4 flex items-center gap-2 font-semibold">
-        <PetsIcon color="primary" /> Filter by Category
-      </Typography>
-      <Stack direction="row" spacing={1} className="flex-wrap gap-2">
+    <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
+      <Tabs 
+        value={currentIndex === -1 ? 0 : currentIndex} 
+        onChange={(_, newValue) => onCategoryChange(categories[newValue].value)}
+        variant="scrollable"
+        scrollButtons="auto"
+      >
         {categories.map((cat) => (
-          <Chip
-            key={cat.label}
-            label={cat.label}
-            onClick={() => onCategoryChange(cat.value)}
-            color={activeCategory === cat.value ? "primary" : "default"}
-            variant={activeCategory === cat.value ? "filled" : "outlined"}
-            className="cursor-pointer"
-          />
+          <Tab key={cat.label} label={cat.label} />
         ))}
-      </Stack>
+      </Tabs>
     </Box>
   );
 };

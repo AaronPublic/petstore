@@ -1,48 +1,69 @@
-import React from 'react';
 import { Card, CardContent, CardMedia, Typography, Button, CardActions, Box, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useCart } from '../context/CartContext';
 
 const PetCard = ({ pet, onEdit, onDelete }) => {
+  const { addToCart } = useCart();
+
   return (
-    <Card className="h-full flex flex-col hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 rounded-2xl overflow-hidden relative">
-      <Box className="absolute top-2 right-2 z-10 bg-white/80 rounded-lg shadow-sm">
-        <IconButton onClick={() => onEdit(pet)} color="primary"><EditIcon /></IconButton>
-        <IconButton onClick={() => onDelete(pet.id)} color="error"><DeleteIcon /></IconButton>
+    <Card sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      height: '100%',
+      borderRadius: 4,
+      transition: '0.3s',
+      '&:hover': { boxShadow: 6 }
+    }}>
+      <Box sx={{ position: 'relative' }}>
+        <CardMedia
+          component="img"
+          height="240"
+          image={pet.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image'}
+          alt={pet.name}
+          sx={{ objectFit: 'cover' }}
+        />
+        <Box sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'background.paper', borderRadius: 2 }}>
+          <IconButton onClick={() => onEdit(pet)} color="primary" size="small"><EditIcon /></IconButton>
+          <IconButton onClick={() => onDelete(pet.id)} color="error" size="small"><DeleteIcon /></IconButton>
+        </Box>
       </Box>
-      <CardMedia
-        component="img"
-        height="240"
-        image={pet.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image'}
-        alt={pet.name}
-        className="h-60 object-cover"
-      />
-      <CardContent className="flex-grow p-5">
-        <Box className="flex justify-between items-start mb-2">
-          <Typography variant="h5" className="font-bold text-gray-900 tracking-tight">
+      <CardContent sx={{ flexGrow: 1, p: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
             {pet.name}
           </Typography>
-          <Typography variant="body2" className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium">
+          <Typography variant="caption" sx={{ bgcolor: 'action.hover', px: 1.5, py: 0.5, borderRadius: 1 }}>
             {pet.category}
           </Typography>
         </Box>
-        <Typography variant="body1" color="text.secondary" className="mb-4">
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
           {pet.breed} • {pet.age} years old
         </Typography>
-        <Typography variant="h5" color="primary" className="font-extrabold text-2xl">
+        <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
           ${pet.price?.toFixed(2)}
         </Typography>
       </CardContent>
-      <CardActions className="p-5 pt-0">
+      <CardActions sx={{ p: 3, pt: 0, gap: 1 }}>
         <Button 
           component={Link} 
           to={`/pets/${pet.id}`} 
-          variant="contained" 
+          variant="outlined" 
           fullWidth
-          className="bg-blue-600 hover:bg-blue-700 py-3 rounded-xl font-bold shadow-md shadow-blue-200"
+          sx={{ borderRadius: 2, py: 1 }}
         >
-          View Details
+          Details
+        </Button>
+        <Button 
+          variant="contained" 
+          startIcon={<ShoppingCartIcon />}
+          onClick={() => addToCart(pet)}
+          fullWidth
+          sx={{ borderRadius: 2, py: 1 }}
+        >
+          Add
         </Button>
       </CardActions>
     </Card>

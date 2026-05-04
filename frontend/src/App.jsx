@@ -1,52 +1,51 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Container, Box, IconButton, Badge } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PetGallery from './pages/PetGallery';
 import PetDetails from './pages/PetDetails';
-import { CartProvider } from './context/CartContext';
+import Cart from './pages/Cart';
+import Tracking from './pages/Tracking';
+import { CartProvider, useCart } from './context/CartContext';
+import Footer from './components/Footer';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1a56db', // blue-700
-    },
-    secondary: {
-      main: '#10b981', // emerald-500
-    },
-    background: {
-      default: '#f9fafb', // gray-50
-    },
-  },
-  typography: {
-    fontFamily: [
-      'Inter',
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
-  },
-});
+const CartIcon = () => {
+  const { cartItems } = useCart();
+  return (
+    <IconButton color="inherit" component={Link} to="/cart">
+      <Badge badgeContent={cartItems.length} color="secondary">
+        <ShoppingCartIcon />
+      </Badge>
+    </IconButton>
+  );
+};
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <CartProvider>
-        <Router>
-          <div className="min-h-screen bg-gray-50">
+    <CartProvider>
+      <Router>
+        <AppBar position="sticky" sx={{ bgcolor: 'background.paper', color: 'text.primary', borderBottom: 1, borderColor: 'divider' }} elevation={0}>
+          <Container maxWidth="lg">
+            <Toolbar disableGutters>
+              <Typography variant="h5" component={Link} to="/" sx={{ flexGrow: 1, fontWeight: 800, color: 'primary.main', letterSpacing: -0.5, textDecoration: 'none' }}>
+                PetStore.
+              </Typography>
+              <CartIcon />
+            </Toolbar>
+          </Container>
+        </AppBar>
+        <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ flexGrow: 1 }}>
             <Routes>
               <Route path="/" element={<PetGallery />} />
               <Route path="/pets/:id" element={<PetDetails />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/tracking" element={<Tracking />} />
             </Routes>
-          </div>
-        </Router>
-      </CartProvider>
-    </ThemeProvider>
+          </Box>
+          <Footer />
+        </Box>
+      </Router>
+    </CartProvider>
   );
 }
 
