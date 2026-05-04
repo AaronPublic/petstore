@@ -66,18 +66,33 @@ const PetGallery = () => {
       </Paper>
 
       <Container maxWidth="lg">
-        <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} spacing={3} sx={{ mb: 4 }}>
+        <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} spacing={2} sx={{ mb: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
             <FilterBar activeCategory={category} onCategoryChange={setCategory} />
           </Box>
           <TextField
             variant="outlined"
-            placeholder="Search pets..."
+            placeholder="Search pets by name or breed..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            sx={{ width: { xs: '100%', md: 300 }, bgcolor: 'background.paper' }}
+            margin="dense"
+            sx={{ 
+              width: { xs: '100%', md: 400 }, 
+              bgcolor: 'background.paper',
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 0,
+                '& fieldset': { borderColor: 'divider' },
+                '&:hover fieldset': { borderColor: 'primary.main' },
+                '&.Mui-focused fieldset': { borderWidth: '2px' }
+              },
+              '& .MuiInputBase-input': { py: 1.5 }
+            }}
             InputProps={{
-              startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start" sx={{ color: 'text.secondary' }}>
+                  <SearchIcon />
+                </InputAdornment>
+              ),
             }}
           />
         </Stack>
@@ -87,10 +102,10 @@ const PetGallery = () => {
             <CircularProgress size={50} />
           </Box>
         ) : (
-          <Grid container spacing={4} direction="row" alignItems="flex-start" justifyContent="flex-start">
+          <Grid container spacing={3} direction="column">
             {filteredPets.length > 0 ? (
               filteredPets.map((pet) => (
-                <Grid item key={pet.id} xs={12} sm={6} md={4}>
+                <Grid item key={pet.id} xs={12}>
                   <PetCard pet={pet} onEdit={(p) => { setEditingPet(p); setModalOpen(true); }} onDelete={(id) => setDeleteId(id)} />
                 </Grid>
               ))

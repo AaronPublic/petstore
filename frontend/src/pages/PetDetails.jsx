@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Container, Typography, Box, Button, Grid, Chip, Divider, CircularProgress } from '@mui/material';
+import { Container, Typography, Box, Button, Grid, Chip, Divider, CircularProgress, Snackbar, Alert } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import petService from '../services/petService';
 import { useCart } from '../context/CartContext';
@@ -9,6 +9,7 @@ const PetDetails = () => {
   const { id } = useParams();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -27,12 +28,17 @@ const PetDetails = () => {
 
   const handleAddToCart = () => {
     addToCart(pet);
-    alert(`${pet.name} added to cart!`);
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setOpenSnackbar(false);
   };
 
   if (loading) {
     return (
-      <Box className="flex justify-center items-center min-h-screen">
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
         <CircularProgress size={60} />
       </Box>
     );
@@ -40,77 +46,79 @@ const PetDetails = () => {
 
   if (!pet) {
     return (
-      <Container className="text-center py-20">
+      <Container sx={{ textAlign: 'center', py: 20 }}>
         <Typography variant="h5" color="error">Pet not found</Typography>
-        <Button component={Link} to="/" className="mt-4">Back to Gallery</Button>
+        <Button component={Link} to="/" sx={{ mt: 4 }}>Back to Gallery</Button>
       </Container>
     );
   }
 
   return (
-    <Container maxWidth="lg" className="py-12">
+    <Container maxWidth="lg" sx={{ py: 6 }}>
       <Button 
         component={Link} 
         to="/" 
         startIcon={<ArrowBackIcon />} 
-        className="mb-8 text-blue-600"
+        sx={{ mb: 4, color: 'primary.main', fontSize: '0.9rem' }}
       >
         Back to Gallery
       </Button>
 
-      <Grid container spacing={6}>
-        <Grid item xs={12} md={6}>
-          <Box className="rounded-xl overflow-hidden shadow-2xl">
+      <Grid container spacing={4} alignItems="flex-start">
+        {/* Left Column: Image */}
+        <Grid item xs={12} md={5}>
+          <Box sx={{ borderRadius: 3, overflow: 'hidden', boxShadow: 2, bgcolor: 'grey.100', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img 
-              src={pet.imageUrl || 'https://via.placeholder.com/600x400?text=No+Image'} 
+              src={pet.imageUrl || 'https://via.placeholder.com/800x600?text=No+Image'} 
               alt={pet.name} 
-              className="w-full h-auto object-cover"
+              style={{ width: '100%', height: 'auto', display: 'block' }}
             />
           </Box>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Box className="flex flex-col h-full">
-            <Box className="mb-6">
-              <Chip label={pet.category} color="primary" className="mb-4" />
-              <Typography variant="h2" className="font-bold text-gray-900 mb-2">
+
+        {/* Right Column: Info */}
+        <Grid item xs={12} md={7}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Box sx={{ mb: 3 }}>
+              <Chip label={pet.category} color="primary" size="small" sx={{ mb: 1.5, fontWeight: 700 }} />
+              <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>
                 {pet.name}
               </Typography>
-              <Typography variant="h5" color="textSecondary" className="mb-4 italic">
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
                 {pet.breed}
               </Typography>
-              <Typography variant="h3" color="primary" className="font-bold">
-                ${pet.price}
+              <Typography variant="h5" color="primary" sx={{ fontWeight: 700 }}>
+                ${pet.price?.toFixed(2)}
               </Typography>
             </Box>
 
-            <Divider className="mb-6" />
+            <Divider sx={{ mb: 3 }} />
 
-            <Box className="mb-8">
-              <Typography variant="h6" className="font-semibold mb-2">Details</Typography>
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Details</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Age</Typography>
-                  <Typography variant="body1" className="font-medium">{pet.age} years</Typography>
+                  <Typography color="text.secondary" variant="caption">Age</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>{pet.age} years</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography color="textSecondary">Category</Typography>
-                  <Typography variant="body1" className="font-medium">{pet.category}</Typography>
+                  <Typography color="text.secondary" variant="caption">Category</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>{pet.category}</Typography>
                 </Grid>
               </Grid>
             </Box>
 
-            <Box className="mb-8 flex-grow">
-              <Typography variant="h6" className="font-semibold mb-2">Description</Typography>
-              <Typography variant="body1" className="text-gray-700 leading-relaxed">
+            <Box sx={{ mb: 4, flexGrow: 1 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>Description</Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                 {pet.description || 'No description provided.'}
               </Typography>
             </Box>
 
             <Button 
               variant="contained" 
-              size="large" 
               onClick={handleAddToCart}
-              className="bg-green-600 hover:bg-green-700 py-4 text-xl font-bold rounded-lg shadow-lg"
+              sx={{ py: 1.5, fontWeight: 700, borderRadius: 2, boxShadow: 'none' }}
               fullWidth
             >
               Add to Cart
@@ -118,6 +126,12 @@ const PetDetails = () => {
           </Box>
         </Grid>
       </Grid>
+      
+      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {pet.name} added to cart!
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

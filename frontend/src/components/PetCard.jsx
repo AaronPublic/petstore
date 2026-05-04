@@ -10,64 +10,62 @@ const PetCard = ({ pet, onEdit, onDelete }) => {
 
   return (
     <Card sx={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '100%',
-      borderRadius: 4,
-      transition: '0.3s',
-      '&:hover': { boxShadow: 6 }
+    display: 'flex', 
+    flexDirection: 'row', 
+    height: 200,
+    borderRadius: 3,
+    border: '1px solid',
+    borderColor: 'divider',
+    boxShadow: 'none',
+    transition: '0.3s',
+    '&:hover': { boxShadow: 4, borderColor: 'primary.main' }
     }}>
-      <Box sx={{ position: 'relative' }}>
-        <CardMedia
-          component="img"
-          height="240"
-          image={pet.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image'}
-          alt={pet.name}
-          sx={{ objectFit: 'cover' }}
-        />
-        <Box sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'background.paper', borderRadius: 2 }}>
-          <IconButton onClick={() => onEdit(pet)} color="primary" size="small"><EditIcon /></IconButton>
-          <IconButton onClick={() => onDelete(pet.id)} color="error" size="small"><DeleteIcon /></IconButton>
-        </Box>
+    <Box sx={{ position: 'relative', width: 200, flexShrink: 0, overflow: 'hidden' }}>
+      <CardMedia
+        component="img"
+        image={pet.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image'}
+        alt={pet.name}
+        sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+      />
+      <Box sx={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 0.5 }}>
+        <IconButton onClick={() => onEdit(pet)} sx={{ bgcolor: 'rgba(255,255,255,0.8)', '&:hover': { bgcolor: 'white' } }} size="small"><EditIcon /></IconButton>
+        <IconButton onClick={() => onDelete(pet.id)} sx={{ bgcolor: 'rgba(255,255,255,0.8)', '&:hover': { bgcolor: 'white' } }} color="error" size="small"><DeleteIcon /></IconButton>
       </Box>
-      <CardContent sx={{ flexGrow: 1, p: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            {pet.name}
-          </Typography>
-          <Typography variant="caption" sx={{ bgcolor: 'action.hover', px: 1.5, py: 0.5, borderRadius: 1 }}>
-            {pet.category}
-          </Typography>
-        </Box>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-          {pet.breed} • {pet.age} years old
-        </Typography>
-        <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
-          ${pet.price?.toFixed(2)}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ p: 3, pt: 0, gap: 1 }}>
-        <Button 
-          component={Link} 
-          to={`/pets/${pet.id}`} 
-          variant="outlined" 
-          fullWidth
-          sx={{ borderRadius: 2, py: 1 }}
-        >
-          Details
-        </Button>
-        <Button 
-          variant="contained" 
-          startIcon={<ShoppingCartIcon />}
-          onClick={() => addToCart(pet)}
-          fullWidth
-          sx={{ borderRadius: 2, py: 1 }}
-        >
-          Add
-        </Button>
-      </CardActions>
-    </Card>
-  );
+    </Box>
+    <CardContent sx={{ flexGrow: 1, p: 2.5, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
+        {pet.category}
+      </Typography>
+      <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+        {pet.name}
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+        {pet.breed} • {pet.age} yrs
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ 
+        display: '-webkit-box', 
+        WebkitLineClamp: 2, 
+        WebkitBoxOrient: 'vertical', 
+        overflow: 'hidden' 
+      }}>
+        {pet.description || 'No description available.'}
+      </Typography>
+      <Typography variant="h5" color="primary" sx={{ fontWeight: 800, mt: 1 }}>
+        ${pet.price?.toFixed(2)}
+      </Typography>
+    </CardContent>
+    <CardActions sx={{ p: 2.5, justifyContent: 'center', width: 180 }}>
+      <Button 
+        variant="contained" 
+        onClick={() => addToCart(pet)} 
+        fullWidth 
+        size="medium"
+        sx={{ borderRadius: 2, fontWeight: 600, boxShadow: 'none' }}
+      >
+        Add to Cart
+      </Button>
+    </CardActions>
+    </Card>  );
 };
 
 export default PetCard;

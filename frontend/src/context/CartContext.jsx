@@ -4,7 +4,10 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(() => {
+    const savedOrders = localStorage.getItem('petstore-orders');
+    return savedOrders ? JSON.parse(savedOrders) : [];
+  });
 
   const addToCart = (pet) => {
     setCartItems((prev) => [...prev, pet]);
@@ -23,7 +26,9 @@ export const CartProvider = ({ children }) => {
       items: items.map(i => i.name),
       status: 'Processing'
     };
-    setOrders((prev) => [...prev, newOrder]);
+    const updatedOrders = [...orders, newOrder];
+    setOrders(updatedOrders);
+    localStorage.setItem('petstore-orders', JSON.stringify(updatedOrders));
   };
 
   return (

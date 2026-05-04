@@ -8,7 +8,11 @@ const Tracking = () => {
   const [filteredOrders, setFilteredOrders] = useState(null);
 
   const handleTrack = () => {
-    setFilteredOrders(orders.filter(o => o.email.toLowerCase() === email.toLowerCase()));
+    console.log('Available orders:', orders);
+    console.log('Filtering by email:', email);
+    const filtered = orders.filter(o => o.email?.toLowerCase() === email.toLowerCase());
+    console.log('Filtered orders:', filtered);
+    setFilteredOrders(filtered);
   };
 
   return (
