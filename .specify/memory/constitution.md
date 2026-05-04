@@ -1,50 +1,50 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: none → 1.0.0
+- List of modified principles:
+  - [PRINCIPLE_1_NAME] → I. Tech Stack Consistency
+  - [PRINCIPLE_2_NAME] → II. Deployment Strategy
+  - [PRINCIPLE_3_NAME] → III. E-commerce Focus
+  - [PRINCIPLE_4_NAME] → IV. User Experience (UX)
+  - [PRINCIPLE_5_NAME] → V. Data Integrity
+- Added sections: none
+- Removed sections: none
+- Templates requiring updates:
+  - .specify/templates/plan-template.md (✅ updated)
+  - .specify/templates/spec-template.md (✅ updated)
+  - .specify/templates/tasks-template.md (✅ updated)
+- Follow-up TODOs: none
+-->
+
+# petstore Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Tech Stack Consistency
+The project MUST use Java Spring Boot for the backend, Postgres for the database, and React for the frontend. Styling MUST be implemented using Tailwind CSS and Material UI (MUI). This ensures a unified development experience and simplifies dependency management.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Deployment Strategy
+The application MUST be configured for deployment on Render. All infrastructure-as-code and deployment scripts MUST target Render's environment, ensuring seamless CI/CD and scalability.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. E-commerce Focus
+The primary purpose of the application is the sale of pets (dogs, cats, birds, and fishes). All features, product catalogs, and order management systems MUST be optimized for this niche e-commerce domain.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. User Experience (UX)
+The user interface MUST be modern, responsive, and intuitive. The combination of Tailwind CSS for layout and MUI for component library SHOULD provide a polished and accessible experience across all device types.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Data Integrity
+Robust schema design in Postgres is MANDATORY. The database MUST ensure the integrity of inventory levels, customer data, and order history, providing a reliable foundation for the e-commerce platform.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+The application MUST adhere to security best practices for e-commerce, including secure payment processing and data protection. Any third-party integrations MUST be vetted for security and performance.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+The development process SHOULD follow a standard Git-based workflow with automated CI/CD targeting the Render platform. Every feature implementation SHOULD be preceded by a clear specification and plan.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other informal practices. Any amendments to these principles require formal documentation and a corresponding version bump. All pull requests MUST be reviewed for compliance with these core principles.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-05-04 | **Last Amended**: 2026-05-04

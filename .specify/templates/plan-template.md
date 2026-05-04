@@ -31,7 +31,10 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Tech Stack**: Does it use Java Spring Boot, Postgres, and React?
+- [ ] **Styling**: Are Tailwind and MUI used for the frontend?
+- [ ] **Deployment**: Is the design compatible with Render?
+- [ ] **Domain**: Is it focused on selling pets?
 
 ## Project Structure
 

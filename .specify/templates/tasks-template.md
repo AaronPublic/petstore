@@ -20,10 +20,10 @@ description: "Task list template for feature implementation"
 
 ## Path Conventions
 
+- **Web app (Primary)**: `backend/src/`, `frontend/src/`
 - **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
 - **Mobile**: `api/src/`, `ios/src/` or `android/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+- Paths shown below assume web app structure - adjust based on plan.md if different
 
 <!-- 
   ============================================================================
@@ -83,15 +83,15 @@ Examples of foundational tasks (adjust based on your project):
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T010 [P] [US1] Contract test for [endpoint] in backend/tests/contract/test_[name].py
+- [ ] T011 [P] [US1] Integration test for [user journey] in backend/tests/integration/test_[name].py
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T012 [P] [US1] Create [Entity1] model in backend/src/models/[entity1].java
+- [ ] T013 [P] [US1] Create [Entity2] model in backend/src/models/[entity2].java
+- [ ] T014 [US1] Implement [Service] in backend/src/services/[service].java (depends on T012, T013)
+- [ ] T015 [US1] Implement [endpoint/feature] in backend/src/[location]/[file].java
 - [ ] T016 [US1] Add validation and error handling
 - [ ] T017 [US1] Add logging for user story 1 operations
 
