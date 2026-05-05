@@ -3,14 +3,18 @@ import { createTheme } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2e7d32', // Emerald green for a pet-friendly, premium feel
+      main: '#4CAF50', // A vibrant, fresh green
     },
     secondary: {
-      main: '#f57c00', // Warm orange for accents
+      main: '#81C784', // A softer, complementary green for secondary accents
     },
     background: {
-      default: '#f8f9fa',
+      default: '#FFFFFF', // Pure white background
     },
+    text: {
+      primary: '#333333', // Dark gray for primary text, ensuring contrast on white
+      secondary: '#666666', // Medium gray for secondary text
+    }
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
