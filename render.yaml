@@ -49,8 +49,9 @@ services:
   # =========================
   # Frontend Vite App
   # =========================
-  - type: static
+  - type: web
     name: petstore-frontend
+    runtime: static
     rootDir: frontend
 
     buildCommand: npm install && npm run build
