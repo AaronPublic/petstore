@@ -3,8 +3,8 @@ services:
   - type: web
     name: petstore-backend
     runtime: docker
-    plan: starter
     rootDir: backend
+    plan: free
     envVars:
       - key: SERVER_PORT
         value: 8080
@@ -41,8 +41,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        # We use the predicted Render URL here to avoid 'fromService' property errors.
-        # Once deployed, the backend will be available at this address.
+        # NOTE: If 'petstore-backend' is already taken, you must change it here and in the service name above.
         value: https://petstore-backend.onrender.com/api
     routes:
       - type: rewrite
