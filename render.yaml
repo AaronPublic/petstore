@@ -3,7 +3,7 @@ services:
   - type: web
     name: petstore-backend
     runtime: docker
-    plan: free
+    plan: starter
     rootDir: backend
     envVars:
       - key: SERVER_PORT
