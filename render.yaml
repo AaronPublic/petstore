@@ -1,53 +1,73 @@
 services:
-  # Backend Web Service
+  # =========================
+  # Backend Spring Boot API
+  # =========================
   - type: web
     name: petstore-backend
     runtime: docker
     rootDir: backend
     plan: free
+
     envVars:
       - key: SERVER_PORT
         value: 8080
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${PETSTORE_DB_HOST}:${PETSTORE_DB_PORT}/${PETSTORE_DB_NAME}
+
       - key: PETSTORE_DB_HOST
         fromDatabase:
           name: petstore-db
           property: host
+
       - key: PETSTORE_DB_PORT
         fromDatabase:
           name: petstore-db
           property: port
+
       - key: PETSTORE_DB_NAME
         fromDatabase:
           name: petstore-db
           property: database
+
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: petstore-db
           property: user
+
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: petstore-db
           property: password
 
-  # Frontend Static Site
-  - type: web
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${PETSTORE_DB_HOST}:${PETSTORE_DB_PORT}/${PETSTORE_DB_NAME}
+
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+
+  # =========================
+  # Frontend Vite App
+  # =========================
+  - type: static
     name: petstore-frontend
-    runtime: static
     rootDir: frontend
-    plan: free
+
     buildCommand: npm install && npm run build
     staticPublishPath: dist
+
     envVars:
       - key: VITE_API_URL
-        # NOTE: If 'petstore-backend' is already taken, you must change it here and in the service name above.
         value: https://petstore-backend.onrender.com/api
+
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
 
+# =========================
+# PostgreSQL Database
+# =========================
 databases:
   - name: petstore-db
     databaseName: petstore
